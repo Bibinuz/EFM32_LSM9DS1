@@ -8,14 +8,15 @@
 
 SemaphoreHandle_t mutex;
 
-void Init_Mutex() {
+void Init_Mutex(uint8_t addr) {
 	mutex = xSemaphoreCreateMutex();
+	BSP_I2C_Init(addr);
 }
 
-bool Write_Mutex(uint8_t addr, uint8_t reg, uint8_t data) {
+bool Write_Mutex(uint8_t reg, uint8_t data) {
 	if (mutex != NULL) {
 		xSemaphoreTake(mutex, portMAX_DELAY);
-		BSP_I2C_Init(addr);
+
 		BSP_I2C_WriteRegister(reg, data);
 		xSemaphoreGive(mutex);
 		return true;
@@ -23,10 +24,9 @@ bool Write_Mutex(uint8_t addr, uint8_t reg, uint8_t data) {
 	return false;
 }
 
-bool Read_Mutex(uint8_t addr, uint8_t reg, uint8_t *val) {
+bool Read_Mutex(uint8_t reg, uint8_t *val) {
 	if (mutex != NULL) {
 		xSemaphoreTake(mutex, portMAX_DELAY);
-		BSP_I2C_Init(addr);
 		BSP_I2C_ReadRegister(reg, val);
 		xSemaphoreGive(mutex);
 		return true;

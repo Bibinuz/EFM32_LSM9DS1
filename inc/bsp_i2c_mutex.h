@@ -5,8 +5,8 @@
 #include <stdbool.h>
 
 
-void Init_Mutex();
+void Init_Mutex(uint8_t addr);
 
-bool Write_Mutex(uint8_t addr, uint8_t reg, uint8_t data);
+bool Write_Mutex(uint8_t reg, uint8_t data);
 
-bool Read_Mutex(uint8_t addr, uint8_t reg, uint8_t *val);
+bool Read_Mutex(uint8_t reg, uint8_t *val);

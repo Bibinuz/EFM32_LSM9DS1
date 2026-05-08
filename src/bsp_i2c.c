@@ -89,11 +89,11 @@ bool BSP_I2C_ReadRegister(uint8_t reg, uint8_t *val) {
 bool I2C_Test() {
 	uint8_t data;
 
-	BSP_I2C_ReadRegister(0xD0, &data);
+	BSP_I2C_ReadRegister(0x0F, &data);
 
 	printf("I2C: %02X\n", data);
 
-	if (data == 0x60) {
+	if (data == 0x68) {
 		return true;
 	} else {
 		return false;

@@ -8,6 +8,7 @@
 #define INC_BSP_I2C_H_
 
 #include <stdbool.h>
+#include <stdint.h>
 
 
 /**
