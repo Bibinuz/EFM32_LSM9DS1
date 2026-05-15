@@ -9,10 +9,17 @@
 #include <stdint.h>
 
 
-#define GYRO_SENSITIVITY 8.75e-3f
+#define GYRO_SENSITIVITY 	8.75e-3f
+#define CTRL_REG1_G 		0x10
+#define CTRL_REG8			0x22
 
-bool read_gyro(GyroData* data) {
-	uint8_t buff[6];
+bool sensor_gyro_init() {
+	Write_Mutex(CTRL_REG1_G, 0x60);
+	Write_Mutex(CTRL_REG8, 0x44);
+}
+
+bool read_gyro(GyroData_Raw* data) {
+	uint8_t buff[6] = {0, 0, 0, 0, 0, 0};
 	if(!Read_Mutex(0x18, &buff[0])) return false;
 	if(!Read_Mutex(0x19, &buff[1])) return false;
 	if(!Read_Mutex(0x1A, &buff[2])) return false;

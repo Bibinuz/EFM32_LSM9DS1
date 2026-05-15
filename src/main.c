@@ -40,7 +40,7 @@ static void PrintGyro(void *pParameters)
 {
   (void) pParameters;
   const portTickType delay = pdMS_TO_TICKS(500);
-  GyroData data;
+  GyroData_Raw data;
 
   if(I2C_Test())
 	  printf("Sensor works!\n");
@@ -53,6 +53,7 @@ static void PrintGyro(void *pParameters)
 		printf("Couldn't read Gyro\n");
 	}
 	else{
+		// Nomes feia la primera lectura perque el print sobreescribia part del SO
 		printf("X: %f, Y: %f, Z:%f\n", data.gyro_x, data.gyro_y, data.gyro_z);
 	}
     vTaskDelay(delay);
@@ -72,13 +73,14 @@ int main(void)
   /* Initialize LED driver */
   BSP_LedsInit();
   Init_Mutex(LSM9DS1_AG_ADDR);
+  sensor_gyro_init(); // El sensor retornaba sempre el mateix perque no estaba inicialitzat.
   /* Setting state of leds*/
   BSP_LedSet(0);
   BSP_LedSet(1);
   /*Create two task for blinking leds*/
   //xTaskCreate(LedBlink, (const char *) "LedBlink1", STACK_SIZE_FOR_TASK, NULL, TASK_PRIORITY, NULL);
   printf("Starting Gyro read\n");
-  xTaskCreate(PrintGyro, (const char *) "PrintGyro1", STACK_SIZE_FOR_TASK, NULL, TASK_PRIORITY, NULL);
+  xTaskCreate(PrintGyro, (const char *) "PrintGyro1", STACK_SIZE_FOR_TASK*4, NULL, TASK_PRIORITY, NULL);
   /*Start FreeRTOS Scheduler*/
   vTaskStartScheduler();
 

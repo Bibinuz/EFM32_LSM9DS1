@@ -9,13 +9,10 @@
 #define INC_READ_SENSOR_H_
 
 #include <stdbool.h>
+#include "sensor_data.h"
 
-typedef struct{
-	float gyro_x;
-	float gyro_y;
-	float gyro_z;
-}GyroData;
+bool sensor_gyro_init();
 
-bool read_gyro(GyroData* data);
+bool read_gyro(GyroData_Raw* data);
 
 #endif /* INC_READ_SENSOR_H_ */

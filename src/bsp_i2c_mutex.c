@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#define DELAY 		10000
 
 SemaphoreHandle_t mutex;
 
@@ -15,7 +16,7 @@ void Init_Mutex(uint8_t addr) {
 
 bool Write_Mutex(uint8_t reg, uint8_t data) {
 	if (mutex != NULL) {
-		xSemaphoreTake(mutex, portMAX_DELAY);
+		xSemaphoreTake(mutex, DELAY);
 
 		BSP_I2C_WriteRegister(reg, data);
 		xSemaphoreGive(mutex);
@@ -26,7 +27,7 @@ bool Write_Mutex(uint8_t reg, uint8_t data) {
 
 bool Read_Mutex(uint8_t reg, uint8_t *val) {
 	if (mutex != NULL) {
-		xSemaphoreTake(mutex, portMAX_DELAY);
+		xSemaphoreTake(mutex, DELAY);
 		BSP_I2C_ReadRegister(reg, val);
 		xSemaphoreGive(mutex);
 		return true;
